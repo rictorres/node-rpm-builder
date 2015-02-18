@@ -1,0 +1,9 @@
+# folders
+node_modules
+logs
+tmp
+
+# files
+*.tmp
+*.log
+*.todo

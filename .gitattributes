@@ -1,0 +1,12 @@
+*.js eol=lf
+*.json eol=lf
+*.hbs eol=lf
+*.less eol=lf
+*.css eol=lf
+*.sql eol=lf
+*.sh eol=lf
+*.svg eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary

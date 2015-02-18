@@ -1,0 +1,41 @@
+{
+  "name": "rpm-builder",
+  "version": "0.0.0",
+  "description": "Build RPM packages using Node.js",
+  "license": "MIT",
+  "homepage": "https://github.com/rictorres/node-rpm-builder",
+  "author": {
+    "name": "Ricardo Torres",
+    "email": "ricardo@rictorres.com",
+    "url": "rictorres.com"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rictorres/node-rpm-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rictorres/node-rpm-builder/issues"
+  },
+  "keywords": [
+    "rpm",
+    "package",
+    "packager",
+    "build",
+    "builder"
+  ],
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "lodash": "^3.2.0",
+    "shortid": "^2.1.3"
+  }
+}

@@ -11,8 +11,13 @@ var _ = require('lodash');
 module.exports = build;
 
 function build(options, cb) {
-  if (!options) {
-    var err = new Error('Options must be defined');
+  if (!options || typeof options !== 'object') {
+    var err = new TypeError('options object is missing');
+    return cb(err);
+  }
+
+  if (!cb || typeof cb !== 'function') {
+    var err = new TypeError('callback is missing');
     return cb(err);
   }
 

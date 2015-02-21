@@ -1,5 +1,5 @@
 # RPM Builder
-Build a RPM package using Node.js.
+Builds a RPM package using Node.js.
 
 
 ## Installation
@@ -25,12 +25,12 @@ var options = {
   tempDir: './tmp'
 }
 
-buildRpm(options, function(err, result) {
+buildRpm(options, function(err, rpm) {
   if (err) {
     throw err;
   }
   
-  console.log(result);
+  console.log(rpm);
 });
 ```
 
@@ -111,11 +111,7 @@ And constructed with the following guidelines:
 
 For more information on SemVer, please visit [http://semver.org/](http://semver.org/).
 
-## Author
-
-**Ricardo Torres**
-
 
 ## License
 
-[MIT License](http://rictorres.mit-license.org/)
+[MIT](http://rictorres.mit-license.org/) © [Ricardo Torres](http://rictorres.com)

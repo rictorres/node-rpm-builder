@@ -2,7 +2,8 @@
 
 var chalk = require('chalk');
 var exec = require('child_process').exec;
-var fsx = require('fs-extra')
+var fsx = require('fs-extra');
+var globby = require('globby');
 var path = require('path');
 var shortid = require('shortid');
 var writeSpec = require('./lib/spec');
@@ -58,12 +59,19 @@ function build(options, cb) {
   var files = [];
   _.forEach(options.files, function(file) {
     if (!file.hasOwnProperty('src') || !file.hasOwnProperty('dest')) {
-      var err = new Error('All files must have source (src) and destination (dest) set');
+      var err = new Error('All files/folders must have source (src) and destination (dest) set');
       return cb(err);
     }
 
-    files.push(file.dest);
-    fsx.copySync(file.src, path.join(buildRoot, file.dest));
+    var actualSrc = globby.sync(file.src);
+
+    fsx.ensureDir(path.join(buildRoot, file.dest));
+
+    _.forEach(actualSrc, function(srcFile) {
+      var dest = path.join(buildRoot, file.dest, srcFile);
+      files.push(dest)
+      fsx.copySync(srcFile, dest);
+    });
   });
 
   // Write spec file

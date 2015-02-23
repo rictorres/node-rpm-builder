@@ -3,6 +3,7 @@ node_modules
 logs
 tmp
 tmp-*
+rpm-builder-test-tmp*
 
 # files
 *.tmp

@@ -97,6 +97,16 @@ Sets the vendor tag in the RPM package.
 
 Specifies the group tag in the RPM package.
 
+#### url
+`String`
+
+A URL to the project homepage or documentation of the project. Defined in the [spec-file specification](http://www.rpm.org/wiki/PackagerDocs/Spec#URL:andPackager:Tags).
+
+#### prefix
+`String`
+
+This will specify the relocatable root of the package so that it may be relocated by the user at install time.  The manual entry for the [prefix tag](http://www.rpm.org/max-rpm/s1-rpm-reloc-prefix-tag.html) explains the use case quite well.
+
 #### sources
 `Array`
 
@@ -112,6 +122,31 @@ The patch tag is used to identify which patches are associated with the software
 
 These tags control automatic dependency processing while the package is being built.  Their default state of `true` is not a decision by this project but represents the default action taken by RPM.  When both `autoReq` and `autoProv` are set to `false`, the `AutoReqProv` tag will instead be used with a value of
 `no` in the SPEC file.
+
+### requires
+`Array`
+
+An array of packages that this package depends on (e.g. `["nodejs >= 0.10.22", "libpng"]`).
+
+#### conflicts
+`Array`
+
+An array of packages that this package conflicts with (e.g. `["cobol", "sparta > 300"]`).
+
+#### excludeArchs
+`Array`
+
+An array specifying which architectures to prevent the RPM from building on (e.g. `["sparc"]`).
+
+#### exclusiveArchs
+`Array`
+
+An array specifying _only_ the architectures the RPM should build on (e.g. `["x86_64"]`).
+
+#### buildRequires
+`Array`
+
+List of packages required for building (compiling) the program. You can specify a minimum version if necessary (e.g. `["ocaml >= 3.08"]`).
 
 #### prepScript
 `Array`

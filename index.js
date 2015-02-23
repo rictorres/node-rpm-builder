@@ -89,12 +89,6 @@ function build(options, cb) {
 
   exec(cmd, {}, function rpm(err, stdout, stderr) {
 
-    // Remove temp folder
-    if (!options.keepTemp) {
-      console.log(chalk.cyan('Removing RPM directory structure at:'), tmpDir);
-      fsx.removeSync(tmpDir);
-    }
-
     if (err) {
       return cb(err);
     }
@@ -105,6 +99,12 @@ function build(options, cb) {
         var rpmDest = path.join(process.cwd(), path.basename(rpm[0]));
         console.log(chalk.cyan('Copying RPM package to:'), rpmDest);
         fsx.copySync(rpm[0], rpmDest);
+
+        // Remove temp folder
+        if (!options.keepTemp) {
+          console.log(chalk.cyan('Removing RPM directory structure at:'), tmpDir);
+          fsx.removeSync(tmpDir);
+        }
 
         return cb(null, rpmDest);
       }

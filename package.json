@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "lint": "./node_modules/jshint/bin/jshint index.js lib/*.js test/*.js"
+    "lint": "./node_modules/jshint/bin/jshint --reporter ./node_modules/jshint-stylish/stylish.js index.js lib/*.js test/*.js; true"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "jshint": "^2.6.0",
+    "jshint-stylish": "^1.0.0",
     "mocha": "^2.1.0"
   }
 }

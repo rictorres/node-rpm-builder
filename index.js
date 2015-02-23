@@ -65,9 +65,9 @@ function build(options, cb) {
     fsx.ensureDir(path.join(buildRoot, file.dest));
 
     _.forEach(actualSrc, function(srcFile) {
-      var dest = path.join(buildRoot, file.dest, srcFile);
-      files.push(dest)
-      fsx.copySync(srcFile, dest);
+      var dest = path.join(file.dest, srcFile);
+      files.push(dest);
+      fsx.copySync(srcFile, path.join(buildRoot, dest));
     });
   });
 

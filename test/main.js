@@ -1,5 +1,7 @@
 'use strict';
 
+/* global describe, it */
+
 var assert = require('assert');
 var exec = require('child_process').exec;
 var fsx = require('fs-extra');
@@ -185,7 +187,8 @@ describe('rpm builder', function() {
         var cmd = 'rpm -qpl ' + rpm;
 
         exec(cmd, {}, function rpmContents(err, stdout, stderr) {
-          if (err) {
+          if (err || stderr !== '') {
+            err = err || new Error(stderr);
             throw err;
           }
 

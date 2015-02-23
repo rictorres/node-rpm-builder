@@ -87,7 +87,7 @@ function build(options, cb) {
 
   console.log(chalk.cyan('Executing:'), cmd);
 
-  exec(cmd, {}, function rpm(err, stdout, stderr) {
+  exec(cmd, {}, function rpmbuild(err, stdout) {
 
     if (err) {
       return cb(err);

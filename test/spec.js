@@ -1,5 +1,7 @@
 'use strict';
 
+/* global describe, it, before, after */
+
 var assert = require('assert');
 var fsx = require('fs-extra');
 var path = require('path');

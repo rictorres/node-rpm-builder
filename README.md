@@ -31,6 +31,7 @@ buildRpm(options, function(err, rpm) {
   }
   
   console.log(rpm);
+  // /path/to/my-project-0.0.0-1.noarch.rpm
 });
 ```
 

@@ -12,13 +12,11 @@ var writeSpec = require('./lib/spec');
 
 function build(options, cb) {
   if (!options || typeof options !== 'object') {
-    var err = new TypeError('options object is missing');
-    return cb(err);
+    throw new TypeError('options object is missing');
   }
 
   if (!cb || typeof cb !== 'function') {
-    var err = new TypeError('callback is missing');
-    return cb(err);
+    throw new TypeError('callback is missing');
   }
 
   var defaults = {

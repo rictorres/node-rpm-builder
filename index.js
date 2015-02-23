@@ -6,10 +6,9 @@ var fsx = require('fs-extra');
 var globby = require('globby');
 var path = require('path');
 var shortid = require('shortid');
-var writeSpec = require('./lib/spec');
 var _ = require('lodash');
 
-module.exports = build;
+var writeSpec = require('./lib/spec');
 
 function build(options, cb) {
   if (!options || typeof options !== 'object') {
@@ -115,3 +114,5 @@ function build(options, cb) {
 
   });
 }
+
+module.exports = build;

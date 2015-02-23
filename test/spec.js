@@ -5,7 +5,6 @@ var fsx = require('fs-extra');
 var path = require('path');
 var shortid = require('shortid');
 
-var buildRpm = require('../');
 var writeSpec = require('../lib/spec.js');
 
 describe('spec', function() {
@@ -77,7 +76,7 @@ describe('spec', function() {
     });
 
     it('should have correct file name', function() {
-      var specFileName = options.name + '-' + options.version + '-' + options.buildArch + '.spec';
+      var specFileName = options.name + '-' + options.version + '-' + options.release + '.' + options.buildArch + '.spec';
       assert.strictEqual(path.basename(specFile), specFileName);
     });
 

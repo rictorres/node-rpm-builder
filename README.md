@@ -1,5 +1,5 @@
 # RPM Builder
-Builds a RPM package using Node.js.
+Builds [RPM](http://www.rpm.org/) packages using Node.js.
 
 
 ## Installation

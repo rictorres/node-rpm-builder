@@ -8,6 +8,13 @@ $ npm install rpm-builder
 ```
 
 
+## Requirements
+This module requires the `rpmbuild` tool to be installed:
+```
+$ yum install rpmdevtools
+```
+
+
 ## Usage
 ```js
 var buildRpm = require('rpm-builder');

@@ -176,6 +176,9 @@ describe('rpm builder', function() {
           {src: './lib/*', dest: '/dist/'},
           {cwd: './test', src: '*.js', dest: '/dist/'}
         ],
+        excludeFiles: [
+          './test/main.js'
+        ],
         tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
         keepTemp: true
       };

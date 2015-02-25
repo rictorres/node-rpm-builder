@@ -31,6 +31,7 @@ function build(options, cb) {
     buildArch: 'noarch',
     tempDir: 'tmp-' + shortid.generate(),
     files: [],
+    excludeFiles: [],
     keepTemp: false
   };
 
@@ -52,6 +53,10 @@ function build(options, cb) {
     fsx.mkdirpSync(path.join(tmpDir, dirName));
   });
 
+  var excludeFiles = globby.sync(options.excludeFiles).map(function(file) {
+    return path.normalize(file);
+  });
+
   // Copy source files to the BUILDROOT folder
   var files = [];
   _.forEach(options.files, function(file) {
@@ -67,6 +72,12 @@ function build(options, cb) {
     fsx.ensureDir(path.join(buildRoot, file.dest));
 
     _.forEach(actualSrc, function(srcFile) {
+      // Check whether to ignore this file
+      if (excludeFiles.indexOf(srcFile) > -1) {
+        console.log(srcFile)
+        return;
+      }
+
       // files/folders should be copied
       // taking into account the cwd
       // so the destination should be

@@ -16,21 +16,32 @@ $ yum install rpmdevtools
 
 
 ## Usage
+
+### Basic
 ```js
 var buildRpm = require('rpm-builder');
 
 var options = {
   name: 'my-project',
-  summary: 'My summary',
-  description: 'My description',
   version: '0.0.0',
   release: '1',
-  license: 'MIT',
-  vendor: 'Vendor',
-  group: 'Development/Tools',
   buildArch: 'noarch',
-  tempDir: './tmp'
-}
+  files: [
+    // will output files to
+    // /dist/dev/file1.txt
+    // /dist/dev/file2.txt
+    // /dist/dev/file3.txt
+    // /dist/dev/img1.png
+    // /dist/dev/img2.png
+    // /dist/dev/img3.png
+    {src: './dev/file1.txt', dest: '/dist/'},
+    {src: './dev/file2.txt', dest: '/dist/'}
+    {src: './dev/file3.txt', dest: '/dist/'}
+    {src: './dev/img1.png', dest: '/dist/'}
+    {src: './dev/img2.png', dest: '/dist/'}
+    {src: './dev/img3.png', dest: '/dist/'}
+  ]
+};
 
 buildRpm(options, function(err, rpm) {
   if (err) {
@@ -40,6 +51,75 @@ buildRpm(options, function(err, rpm) {
   console.log(rpm);
   // /path/to/my-project-0.0.0-1.noarch.rpm
 });
+```
+
+### CWD (current working directory)
+The `cwd` attribute is used to define the working directory for an individual or set of files. When this attribute is set, `src` entries are relative to the `cwd` path.
+```js
+var options = {
+  name: 'my-project',
+  version: '0.0.0',
+  release: '1',
+  buildArch: 'noarch',
+  files: [
+    // will output files to
+    // /dist/dev/file1.txt
+    // /dist/dev/file2.txt
+    // /dist/dev/file3.txt
+    // /dist/img1.png
+    // /dist/img2.png
+    // /dist/img3.png
+    {src: './dev/file1.txt', dest: '/dist/'},
+    {src: './dev/file2.txt', dest: '/dist/'}
+    {src: './dev/file3.txt', dest: '/dist/'}
+    {cwd: './dev/', src: 'img1.png', dest: '/dist/'}
+    {cwd: './dev/', src: 'img2.png', dest: '/dist/'}
+    {cwd: './dev/', src: 'img3.png', dest: '/dist/'}
+  ]
+};
+```
+
+### Globs
+Files can also be listed using the patterns that shell uses (we're relying on [globby](https://github.com/sindresorhus/globby) for this.
+```js
+var options = {
+  name: 'my-project',
+  version: '0.0.0',
+  release: '1',
+  buildArch: 'noarch',
+  files: [
+    // will output files to
+    // /dist/dev/file1.txt
+    // /dist/dev/file2.txt
+    // /dist/dev/file3.txt
+    {src: './dev/*.txt', dest: '/dist/'},
+  ]
+};
+```
+
+### Excluding files
+```js
+var options = {
+  name: 'my-project',
+  version: '0.0.0',
+  release: '1',
+  buildArch: 'noarch',
+  files: [
+    // will output files to
+    // /dist/dev/img1.png
+    // /dist/dev/img2.png
+    // /dist/dev/img3.png
+    {src: './dev/img1.png', dest: '/dist/'},
+    {src: './dev/img2.png', dest: '/dist/'},
+    {src: './dev/img3.png', dest: '/dist/'},
+    {src: './dev/file1.txt', dest: '/dist/'},
+    {src: './dev/file2.txt', dest: '/dist/'}
+    {cwd: './dev/', src: 'file3.txt', dest: '/dist/'}
+  ],
+  excludeFiles: [
+    './dev/*.txt'
+  ]
+};
 ```
 
 

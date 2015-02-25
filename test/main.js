@@ -173,7 +173,8 @@ describe('rpm builder', function() {
         buildArch: 'noarch',
         files: [
           {src: 'index.js', dest: '/dist/'},
-          {src: './lib/*', dest: '/dist/'}
+          {src: './lib/*', dest: '/dist/'},
+          {cwd: './test', src: '*.js', dest: '/dist/'}
         ],
         tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
         keepTemp: true

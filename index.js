@@ -60,12 +60,19 @@ function build(options, cb) {
       return cb(err);
     }
 
-    var actualSrc = globby.sync(file.src);
+    file.cwd = (file.cwd || '.') + '/';
+
+    var actualSrc = globby.sync(path.join(file.cwd, file.src));
 
     fsx.ensureDir(path.join(buildRoot, file.dest));
 
     _.forEach(actualSrc, function(srcFile) {
-      var dest = path.join(file.dest, srcFile);
+      // files/folders should be copied
+      // taking into account the cwd
+      // so the destination should be
+      // relative to the cwd
+      var copyTarget = path.normalize(srcFile).replace(path.normalize(file.cwd), '');
+      var dest = path.join(file.dest, copyTarget);
       files.push(dest);
       fsx.copySync(srcFile, path.join(buildRoot, dest));
     });

@@ -123,6 +123,21 @@ var options = {
 ```
 
 
+## API
+
+### buildRpm(options, callback)
+
+#### `options`
+Type: `Object`
+
+#### `callback`
+Type: `Function`
+
+Args:
+  - `err`: `null` || `Error`.
+  - `rpm`: `String` || `null`, path to the created RPM package.
+
+
 ## Options
 
 #### tempDir

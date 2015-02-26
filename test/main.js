@@ -1,10 +1,11 @@
 'use strict';
 
-/* global describe, it */
+/* global describe, it, after */
 
 var assert = require('assert');
 var exec = require('child_process').exec;
 var fsx = require('fs-extra');
+var globby = require('globby');
 var path = require('path');
 var shortid = require('shortid');
 var _ = require('lodash');
@@ -40,6 +41,15 @@ describe('rpm builder', function() {
   });
 
   describe('rpm output', function() {
+
+    after(function() {
+      // remove temp folder left overs
+      _.forEach(globby.sync('./rpm-builder-test-*'), function(dir) {
+        if (fsx.existsSync(dir)) {
+          fsx.removeSync(dir);
+        }
+      });
+    });
 
     it('should keep the temp folder when `keepTemp: true`', function(done) {
       var options = {

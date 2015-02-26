@@ -32,6 +32,7 @@ function build(options, cb) {
     tempDir: 'tmp-' + shortid.generate(),
     files: [],
     excludeFiles: [],
+    rpmDest: process.cwd(),
     keepTemp: false
   };
 
@@ -113,9 +114,9 @@ function build(options, cb) {
     if (stdout) {
       var rpm = stdout.match(/(\/.+\..+\.rpm)/);
       if (rpm && rpm.length > 0) {
-        var rpmDest = path.join(process.cwd(), path.basename(rpm[0]));
-        console.log(chalk.cyan('Copying RPM package to:'), rpmDest);
-        fsx.copySync(rpm[0], rpmDest);
+        var rpmDestination = path.join(options.rpmDest, path.basename(rpm[0]));
+        console.log(chalk.cyan('Copying RPM package to:'), rpmDestination);
+        fsx.copySync(rpm[0], rpmDestination);
 
         // Remove temp folder
         if (!options.keepTemp) {
@@ -123,7 +124,7 @@ function build(options, cb) {
           fsx.removeSync(tmpDir);
         }
 
-        return cb(null, rpmDest);
+        return cb(null, rpmDestination);
       }
     }
 

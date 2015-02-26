@@ -74,7 +74,6 @@ function build(options, cb) {
     _.forEach(actualSrc, function(srcFile) {
       // Check whether to ignore this file
       if (excludeFiles.indexOf(srcFile) > -1) {
-        console.log(srcFile)
         return;
       }
 

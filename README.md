@@ -1,5 +1,5 @@
 # RPM Builder
-Builds [RPM](http://www.rpm.org/) packages using Node.js.
+Builds [RPM](http://www.rpm.org/) packages using [Node.js](http://nodejs.org/) / [io.js](https://iojs.org/).
 
 
 ## Installation
@@ -301,6 +301,12 @@ An array of commands to be executed after uninstallation. Each element in the ar
 `Array`
 
 This script is executed whenever the installed package is verified by RPMs verification command.  Effectively, it should be used to verify the the correct installation of the package.  Note that RPM already verifies the existence of the package's files along with their file attributes.  Thus, the contents of this script should focus on other aspects of the installation.
+
+
+## Tests
+```
+$ npm test
+```
 
 
 ## Versioning

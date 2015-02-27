@@ -114,9 +114,11 @@ function build(options, cb) {
     if (stdout) {
       var rpm = stdout.match(/(\/.+\..+\.rpm)/);
       if (rpm && rpm.length > 0) {
-        var rpmDestination = path.join(options.rpmDest, path.basename(rpm[0]));
-        console.log(chalk.cyan('Copying RPM package to:'), rpmDestination);
-        fsx.copySync(rpm[0], rpmDestination);
+        if (options.rpmDest) {
+          var rpmDestination = path.join(options.rpmDest, path.basename(rpm[0]));
+          console.log(chalk.cyan('Copying RPM package to:'), rpmDestination);
+          fsx.copySync(rpm[0], rpmDestination);
+        }
 
         // Remove temp folder
         if (!options.keepTemp) {

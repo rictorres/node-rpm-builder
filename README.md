@@ -151,6 +151,12 @@ Sets the temporary path name that stores the folder structure required by the `r
 
 If true will keep the temporary folder used to build the RPM. Useful for debugging.
 
+#### rpmDest
+
+`String` (default: `process.cwd()`)
+
+After the RPM package is created, it'll be copied to the path specified here. If you don't want to copy the RPM package elsewhere just set it to `false`, but be warned that if `keepTemp === false` the whole folder will be removed, including the RPM package.
+
 
 ### RPM Spec related
 

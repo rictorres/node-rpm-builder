@@ -128,9 +128,10 @@ describe('rpm builder', function() {
       });
     });
 
-    it('rpm file should be copied to the current working dir', function(done) {
+    it('rpm file should be copied to the `rpmDest`', function(done) {
       var options = {
         tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
+        rpmDest: path.join(process.cwd(), 'test'),
         keepTemp: false
       };
 

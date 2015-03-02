@@ -80,7 +80,7 @@ var options = {
 ```
 
 ### Globs
-Files can also be listed using the patterns that shell uses (we're relying on [globby](https://github.com/sindresorhus/globby) for this.
+Files can also be listed using the patterns that shell uses (we're relying on [globby](https://github.com/sindresorhus/globby) for this).
 ```js
 var options = {
   name: 'my-project',

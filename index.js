@@ -61,8 +61,7 @@ function prepareFiles(files, excludeFiles, buildRoot) {
 
   _.forEach(files, function(file) {
     if (!file.hasOwnProperty('src') || !file.hasOwnProperty('dest')) {
-      var err = new Error('All files/folders must have source (src) and destination (dest) set');
-      return cb(err);
+      throw new Error('All files/folders must have source (src) and destination (dest) set');
     }
 
     file.cwd = (file.cwd || '.') + '/';
@@ -165,10 +164,15 @@ module.exports = function(options, cb) {
 
   var tmpDir = path.resolve(options.tempDir);
   var buildRoot = path.join(tmpDir, '/BUILDROOT/');
+  var files = [];
 
   setupTempDir(tmpDir);
 
-  var files = prepareFiles(options.files, options.excludeFiles, buildRoot);
+  try {
+    files = prepareFiles(options.files, options.excludeFiles, buildRoot);
+  } catch(ex) {
+    return cb(ex);
+  }
 
   // Write spec file
   var specFile = writeSpec(files, options);

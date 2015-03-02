@@ -10,6 +10,12 @@ var _ = require('lodash');
 
 var writeSpec = require('./lib/spec');
 
+/**
+ * Creates the folder structure needed to create
+ * the RPM package.
+ *
+ * @param  {String} tmpDir the path where the folder structure will reside
+ */
 function setupTempDir(tmpDir) {
   var rpmStructure = ['BUILD', 'BUILDROOT', 'RPMS', 'SOURCES', 'SPECS', 'SRPMS'];
 
@@ -26,12 +32,29 @@ function setupTempDir(tmpDir) {
   });
 }
 
+/**
+ * Expand the patterns/files (specified by the user)
+ * that should be ignored when building the RPM package.
+ *
+ * @param  {Array} excludeFiles patterns/files to ignore
+ * @return {Array}              expanded list of files to ignore
+ */
 function retrieveFilesToExclude(excludeFiles) {
   return globby.sync(excludeFiles).map(function(file) {
     return path.normalize(file);
   });
 }
 
+/**
+ * 1. Normalize and expand the patterns/files (specified by the user)
+ *    that should be included in the RPM package.
+ * 2. Copies the files to the respective destination.
+ *
+ * @param  {Array}  files         patterns/files to include
+ * @param  {Array}  excludeFiles  expanded list of files to ignore
+ * @param  {String} buildRoot     where all files should be copied into
+ * @return {Array}                list of files to include in the RPM
+ */
 function prepareFiles(files, excludeFiles, buildRoot) {
   var _files = [];
   var filesToExclude = retrieveFilesToExclude(excludeFiles);
@@ -68,6 +91,14 @@ function prepareFiles(files, excludeFiles, buildRoot) {
   return _files;
 }
 
+/**
+ * Runs the rpmbuild tool in a child process.
+ *
+ * @param  {String}   buildRoot  where all included files reside
+ * @param  {String}   specFile   path to the file from which the RPM package will be created
+ * @param  {String}   rpmDest    where the .rpm file should be copied to
+ * @param  {Function} cb         callback function to be executed when the task is done
+ */
 function buildRpm(buildRoot, specFile, rpmDest, cb) {
   // Build the RPM package.
   var cmd = [
@@ -154,4 +185,4 @@ module.exports = function(options, cb) {
 
     return cb(null, rpm);
   });
-}
+};

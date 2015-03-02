@@ -121,8 +121,10 @@ function buildRpm(buildRoot, specFile, rpmDest, cb) {
     if (stdout) {
       var rpm = stdout.match(/(\/.+\..+\.rpm)/);
       if (rpm && rpm.length > 0) {
+        var rpmDestination = rpm[0];
+
         if (rpmDest) {
-          var rpmDestination = path.join(rpmDest, path.basename(rpm[0]));
+          rpmDestination = path.join(rpmDest, path.basename(rpmDestination));
           console.log(chalk.cyan('Copying RPM package to:'), rpmDestination);
           fsx.copySync(rpm[0], rpmDestination);
         }

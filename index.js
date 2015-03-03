@@ -10,6 +10,8 @@ var _ = require('lodash');
 
 var writeSpec = require('./lib/spec');
 
+var logger;
+
 /**
  * Creates the folder structure needed to create
  * the RPM package.
@@ -21,12 +23,12 @@ function setupTempDir(tmpDir) {
 
   // If the tmpDir exists (probably from previous build), delete it first
   if (fsx.existsSync(tmpDir)) {
-    console.log(chalk.cyan('Removing old temporary directory.'));
+    logger(chalk.cyan('Removing old temporary directory.'));
     fsx.removeSync(tmpDir);
   }
 
   // Create RPM folder structure
-  console.log(chalk.cyan('Creating RPM directory structure at:'), tmpDir);
+  logger(chalk.cyan('Creating RPM directory structure at:'), tmpDir);
   _.forEach(rpmStructure, function(dirName) {
     fsx.mkdirpSync(path.join(tmpDir, dirName));
   });
@@ -109,7 +111,7 @@ function buildRpm(buildRoot, specFile, rpmDest, cb) {
     specFile
   ].join(' ');
 
-  console.log(chalk.cyan('Executing:'), cmd);
+  logger(chalk.cyan('Executing:'), cmd);
 
   exec(cmd, {}, function rpmbuild(err, stdout) {
 
@@ -124,7 +126,7 @@ function buildRpm(buildRoot, specFile, rpmDest, cb) {
 
         if (rpmDest) {
           rpmDestination = path.join(rpmDest, path.basename(rpmDestination));
-          console.log(chalk.cyan('Copying RPM package to:'), rpmDestination);
+          logger(chalk.cyan('Copying RPM package to:'), rpmDestination);
           fsx.copySync(rpm[0], rpmDestination);
         }
 
@@ -157,10 +159,15 @@ module.exports = function(options, cb) {
     files: [],
     excludeFiles: [],
     rpmDest: process.cwd(),
-    keepTemp: false
+    keepTemp: false,
+    verbose: true
   };
 
   options = _.defaults(options, defaults);
+
+  logger = options.verbose ? require('./lib/logger') : function() {
+    return;
+  };
 
   var tmpDir = path.resolve(options.tempDir);
   var buildRoot = path.join(tmpDir, '/BUILDROOT/');
@@ -176,7 +183,7 @@ module.exports = function(options, cb) {
 
   // Write spec file
   var specFile = writeSpec(files, options);
-  console.log(chalk.cyan('SPEC file created:'), specFile);
+  logger(chalk.cyan('SPEC file created:'), specFile);
 
   buildRpm(buildRoot, specFile, options.rpmDest, function(err, rpm) {
     if (err) {
@@ -185,7 +192,7 @@ module.exports = function(options, cb) {
 
     // Remove temp folder
     if (!options.keepTemp) {
-      console.log(chalk.cyan('Removing RPM directory structure at:'), tmpDir);
+      logger(chalk.cyan('Removing RPM directory structure at:'), tmpDir);
       fsx.removeSync(tmpDir);
     }
 

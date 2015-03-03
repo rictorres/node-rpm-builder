@@ -157,6 +157,12 @@ If true will keep the temporary folder used to build the RPM. Useful for debuggi
 
 After the RPM package is created, it'll be copied to the path specified here. If you don't want to copy the RPM package elsewhere just set it to `false`, but be warned that if `keepTemp === false` the whole folder will be removed, including the RPM package.
 
+####  verbose
+
+`Boolean` (default: `true`)
+
+If true will log messages/progress to `stdout`. Useful for debugging.
+
 
 ### RPM Spec related
 

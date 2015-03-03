@@ -10,9 +10,14 @@ $ npm install rpm-builder
 
 ## Requirements
 This module requires the `rpmbuild` tool to be installed:
+
+### Linux
 ```
 $ yum install rpmdevtools
 ```
+
+### Mac OS X
+I recommend using Homebrew. Please check this [quick guide](http://timperrett.com/2014/03/23/enabling-rpmbuild-on-mac-osx/).
 
 
 ## Usage

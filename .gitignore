@@ -1,4 +1,5 @@
 # folders
+coverage
 node_modules
 logs
 tmp

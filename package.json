@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec test/*.js",
+    "coverage": "./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*.js",
     "lint": "./node_modules/jshint/bin/jshint --reporter ./node_modules/jshint-stylish/stylish.js index.js lib/*.js test/*.js; true"
   },
   "repository": {

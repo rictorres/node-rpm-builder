@@ -1,9 +1,9 @@
 # RPM Builder
-Builds [RPM](http://www.rpm.org/) packages using [Node.js](http://nodejs.org/) / [io.js](https://iojs.org/).
+Builds [RPM](http://www.rpm.org/) packages using [Node.js](https://nodejs.org/) / [io.js](https://iojs.org/).
 
 
 ## Installation
-```
+```bash
 $ npm install rpm-builder
 ```
 
@@ -12,8 +12,12 @@ $ npm install rpm-builder
 This module requires the `rpmbuild` tool to be installed:
 
 ### Linux
-```
+```bash
+# fedora / cent os
 $ yum install rpmdevtools
+
+# ubuntu
+$ apt-get install rpm
 ```
 
 ### Mac OS X

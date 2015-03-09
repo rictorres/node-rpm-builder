@@ -1,4 +1,4 @@
-# RPM Builder
+# RPM Builder [![Build Status](http://img.shields.io/travis/rictorres/node-rpm-builder/master.svg?style=flat-square)](https://travis-ci.org/rictorres/node-rpm-builder) [![npm](https://img.shields.io/npm/v/rpm-builder.svg?style=flat-square)](https://www.npmjs.com/package/rpm-builder) ![David](https://img.shields.io/david/rictorres/node-rpm-builder.svg?style=flat-square)
 Builds [RPM](http://www.rpm.org/) packages using [Node.js](https://nodejs.org/) / [io.js](https://iojs.org/).
 
 

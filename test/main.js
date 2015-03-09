@@ -202,9 +202,12 @@ describe('rpm builder', function() {
         var cmd = 'rpm -qpl ' + rpm;
 
         exec(cmd, {}, function rpmContents(err, stdout, stderr) {
-          if (err || stderr !== '') {
-            err = err || new Error(stderr);
+          if (err) {
             throw err;
+          }
+
+          if (stderr) {
+            console.warn('stderr:', stderr);
           }
 
           var contents = stdout.split('\n');

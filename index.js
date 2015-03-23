@@ -113,6 +113,9 @@ function buildRpm(buildRoot, specFile, rpmDest, cb, options) {
 
   logger(chalk.cyan('Executing:'), cmd);
 
+  if(options === undefined)
+    options = {};
+
   exec(cmd, options, function rpmbuild(err, stdout) {
 
     if (err) {

@@ -100,7 +100,7 @@ function prepareFiles(files, excludeFiles, buildRoot) {
  * @param  {String}   rpmDest    where the .rpm file should be copied to
  * @param  {Function} cb         callback function to be executed when the task is done
  */
-function buildRpm(buildRoot, specFile, rpmDest, cb, options) {
+function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
   // Build the RPM package.
   var cmd = [
     'rpmbuild',
@@ -113,10 +113,10 @@ function buildRpm(buildRoot, specFile, rpmDest, cb, options) {
 
   logger(chalk.cyan('Executing:'), cmd);
 
-  if(options === undefined)
-    options = {};
+  if(execOpts === undefined)
+    execOpts = {};
 
-  exec(cmd, options, function rpmbuild(err, stdout) {
+  exec(cmd, execOpts, function rpmbuild(err, stdout) {
 
     if (err) {
       return cb(err);
@@ -163,7 +163,8 @@ module.exports = function(options, cb) {
     excludeFiles: [],
     rpmDest: process.cwd(),
     keepTemp: false,
-    verbose: true
+    verbose: true,
+    execOpts: {}
   };
 
   options = _.defaults(options, defaults);
@@ -188,7 +189,7 @@ module.exports = function(options, cb) {
   var specFile = writeSpec(files, options);
   logger(chalk.cyan('SPEC file created:'), specFile);
 
-  buildRpm(buildRoot, specFile, options.rpmDest, function(err, rpm) {
+  buildRpm(buildRoot, specFile, options.rpmDest, options.execOpts, function(err, rpm) {
     if (err) {
       return cb(err);
     }

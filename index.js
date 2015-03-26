@@ -12,8 +12,6 @@ var writeSpec = require('./lib/spec');
 
 var logger;
 
-module.exports = rpm;
-
 /**
  * Creates the folder structure needed to create
  * the RPM package.
@@ -204,4 +202,6 @@ function rpm(options, cb) {
 
     return cb(null, rpm);
   });
-};
+}
+
+module.exports = rpm;

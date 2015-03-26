@@ -12,6 +12,8 @@ var writeSpec = require('./lib/spec');
 
 var logger;
 
+module.exports = rpm;
+
 /**
  * Creates the folder structure needed to create
  * the RPM package.
@@ -114,6 +116,7 @@ function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
   logger(chalk.cyan('Executing:'), cmd);
 
   execOpts = execOpts || {};
+
   exec(cmd, execOpts, function rpmbuild(err, stdout) {
 
     if (err) {
@@ -122,6 +125,7 @@ function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
 
     if (stdout) {
       var rpm = stdout.match(/(\/.+\..+\.rpm)/);
+
       if (rpm && rpm.length > 0) {
         var rpmDestination = rpm[0];
 
@@ -137,7 +141,7 @@ function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
   });
 }
 
-module.exports = function(options, cb) {
+function rpm(options, cb) {
   if (!options || typeof options !== 'object') {
     throw new TypeError('options object is missing');
   }

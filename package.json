@@ -19,6 +19,10 @@
     "coverage": "./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*.js",
     "lint": "./node_modules/jshint/bin/jshint --reporter ./node_modules/jshint-stylish/stylish.js index.js lib/*.js test/*.js; true"
   },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/rictorres/node-rpm-builder.git"
@@ -45,6 +49,7 @@
     "istanbul": "^0.3.6",
     "jshint": "^2.6.0",
     "jshint-stylish": "^1.0.0",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "pre-commit": "0.0.11"
   }
 }

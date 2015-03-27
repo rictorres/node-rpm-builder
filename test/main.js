@@ -41,6 +41,7 @@ describe('rpm builder', function() {
   });
 
   describe('rpm output', function() {
+    this.timeout(6000);
 
     after(function() {
       // remove temp folder left overs

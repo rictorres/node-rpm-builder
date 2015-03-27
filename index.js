@@ -92,7 +92,7 @@ function prepareFiles(files, excludeFiles, buildRoot) {
       var dest = path.join(file.dest, copyTarget);
 
       if(checkDirective(file.directive))
-        _files.push({file: dest, directive: file.directive});
+        _files.push({path: dest, directive: file.directive});
       else
         throw new Error('Invalid file directive informed: ' + file.directive);
 

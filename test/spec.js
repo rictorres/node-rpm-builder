@@ -40,9 +40,9 @@ describe('spec', function() {
   describe('spec output', function() {
     var specFile;
     var files = [
-      path.join(__dirname, 'index.js'),
-      path.join(__dirname, 'package.json'),
-      path.join(__dirname, 'README.md')
+      {path: path.join(__dirname, 'index.js')},
+      {path: path.join(__dirname, 'package.json')},
+      {path: path.join(__dirname, 'README.md'), directive: 'config'}
     ];
     var options = {
       name: 'test',
@@ -113,7 +113,11 @@ describe('spec', function() {
     it('should have all files defined', function(done) {
       fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
         files.forEach(function(file) {
-          assert(data.indexOf(file) > -1);
+          assert(data.indexOf(file.path) > -1);
+          if(file.hasOwnProperty('directive')) {
+            var directiveLine = '%config "' + file.path + '"';
+            assert(data.indexOf(directiveLine) > -1);
+          }
         });
         done();
       });

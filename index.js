@@ -47,6 +47,12 @@ function retrieveFilesToExclude(excludeFiles) {
   });
 }
 
+function checkDirective(directive) {
+  if(directive == undefined)
+    return true;
+  return directive.match(/^(?:doc|config|attr|verify|docdir|dir)/);
+}
+
 /**
  * 1. Normalize and expand the patterns/files (specified by the user)
  *    that should be included in the RPM package.
@@ -84,7 +90,12 @@ function prepareFiles(files, excludeFiles, buildRoot) {
       // relative to the cwd
       var copyTarget = path.normalize(srcFile).replace(path.normalize(file.cwd), '');
       var dest = path.join(file.dest, copyTarget);
-      _files.push(dest);
+
+      if(checkDirective(file.directive))
+        _files.push({path: dest, directive: file.directive});
+      else
+        throw new Error('Invalid file directive informed: ' + file.directive);
+
       fsx.copySync(srcFile, path.join(buildRoot, dest));
     });
   });

@@ -48,8 +48,9 @@ function retrieveFilesToExclude(excludeFiles) {
 }
 
 function checkDirective(directive) {
-  if(directive == undefined)
+  if (typeof directive === 'undefined') {
     return true;
+  }
   return directive.match(/^(?:doc|config|attr|verify|docdir|dir)/);
 }
 
@@ -91,10 +92,12 @@ function prepareFiles(files, excludeFiles, buildRoot) {
       var copyTarget = path.normalize(srcFile).replace(path.normalize(file.cwd), '');
       var dest = path.join(file.dest, copyTarget);
 
-      if(checkDirective(file.directive))
+      if (checkDirective(file.directive)) {
         _files.push({path: dest, directive: file.directive});
-      else
+      }
+      else {
         throw new Error('Invalid file directive informed: ' + file.directive);
+      }
 
       fsx.copySync(srcFile, path.join(buildRoot, dest));
     });

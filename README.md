@@ -251,6 +251,12 @@ These tags control automatic dependency processing while the package is being bu
 
 An array of packages that this package depends on (e.g. `["nodejs >= 0.10.22", "libpng"]`).
 
+### provides
+`Array`
+
+An array of virtual packages that this package provides (e.g. `["nodejs", "libpng"]`).
+Note that virtual packages may not have version numbers.
+
 #### conflicts
 `Array`
 

@@ -59,7 +59,7 @@ function checkDirective(directive) {
  *
  * @param  {String} src     source file for copy
  */
-const filterExcludeFile = (src) => {
+var filterExcludeFile = function filterFunc(src){
   if (filesToExclude.indexOf(src) > -1) {
     return false;
   }

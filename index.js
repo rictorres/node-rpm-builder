@@ -9,7 +9,7 @@ var shortid = require('shortid');
 var _ = require('lodash');
 
 var writeSpec = require('./lib/spec');
-
+var filesToExclude;
 var logger;
 
 /**
@@ -53,7 +53,18 @@ function checkDirective(directive) {
   }
   return directive.match(/^(?:doc|config|attr|verify|docdir|dir)/);
 }
-
+/**
+ * Filter files especified in array filesexcluded, return false if file
+ * must excluded
+ *
+ * @param  {String} src     source file for copy
+ */
+const filterExcludeFile = (src) => {
+  if (filesToExclude.indexOf(src) > -1) {
+    return false;
+  }
+  return true;
+};
 /**
  * 1. Normalize and expand the patterns/files (specified by the user)
  *    that should be included in the RPM package.
@@ -66,7 +77,7 @@ function checkDirective(directive) {
  */
 function prepareFiles(files, excludeFiles, buildRoot) {
   var _files = [];
-  var filesToExclude = retrieveFilesToExclude(excludeFiles);
+  filesToExclude = retrieveFilesToExclude(excludeFiles);
 
   _.forEach(files, function(file) {
     if (!file.hasOwnProperty('src') || !file.hasOwnProperty('dest')) {
@@ -80,7 +91,7 @@ function prepareFiles(files, excludeFiles, buildRoot) {
     fsx.ensureDir(path.join(buildRoot, file.dest));
 
     _.forEach(actualSrc, function(srcFile) {
-      // Check whether to ignore this file
+
       if (filesToExclude.indexOf(srcFile) > -1) {
         return;
       }
@@ -99,7 +110,7 @@ function prepareFiles(files, excludeFiles, buildRoot) {
         throw new Error('Invalid file directive informed: ' + file.directive);
       }
 
-      fsx.copySync(srcFile, path.join(buildRoot, dest));
+      fsx.copySync(srcFile, path.join(buildRoot, dest),{ filter: filterExcludeFile });
     });
   });
 

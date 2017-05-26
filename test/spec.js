@@ -6,6 +6,7 @@ var assert = require('assert');
 var fsx = require('fs-extra');
 var path = require('path');
 var shortid = require('shortid');
+var _ = require('lodash');
 
 var writeSpec = require('../lib/spec.js');
 
@@ -123,6 +124,54 @@ describe('spec', function() {
       });
     });
 
-  });
+    describe('packager option', function() {
+      var options = {
+        name: 'test',
+        version: '0.0.0',
+        release: '1',
+        buildArch: 'noarch',
+        tempDir: 'tmp-dir'
+      };
+      var specDir = path.join(options.tempDir, 'SPECS');
+      var RE_PACKAGER = /Packager:(.*)/;
 
+      before(function() {
+        fsx.mkdirpSync(specDir);
+      });
+
+      after(function() {
+        fsx.removeSync(options.tempDir);
+      });
+
+      it('should be optional', function(done) {
+        specFile = writeSpec([], options);
+
+        fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
+          if (err) {
+            done(err);
+          }
+          assert(data.match(RE_PACKAGER) === null, 'Packager is present in spec');
+          done();
+        });
+      });
+
+      it('should be contained in spec if specified', function(done) {
+        var packager = 'John Foo <john@foo.com>';
+        specFile = writeSpec([], _.extend({}, options, {
+          packager: packager
+        }));
+
+        fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
+          if (err) {
+            done(err);
+          }
+          var matches = data.match(RE_PACKAGER);
+          assert(matches !== null, 'Packager is missing in spec');
+          assert(matches.length > 1, 'Packager line is corrupted in spec');
+          assert(matches[1].indexOf(packager) > -1, 'Packager value is missing in spec');
+          done();
+        });
+      });
+    });
+  });
 });

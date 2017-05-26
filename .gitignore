@@ -1,4 +1,5 @@
 # folders
+.idea/
 coverage
 node_modules
 logs

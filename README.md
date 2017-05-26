@@ -215,6 +215,11 @@ Specifies the license tag in the RPM package.
 
 Sets the vendor tag in the RPM package.
 
+#### packager
+`String`
+
+Sets the packager tag in the RPM package.
+
 #### group
 `String` (default: `'Development/Tools'`)
 

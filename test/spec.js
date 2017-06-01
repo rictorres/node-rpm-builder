@@ -6,6 +6,8 @@ var assert = require('assert');
 var fsx = require('fs-extra');
 var path = require('path');
 var shortid = require('shortid');
+var _ = require('lodash');
+var dateFormat = require('dateformat');
 
 var writeSpec = require('../lib/spec.js');
 
@@ -123,6 +125,94 @@ describe('spec', function() {
       });
     });
 
-  });
+    describe('changelog option', function() {
+      var options = {
+        name: 'test',
+        version: '0.0.0',
+        release: '1',
+        buildArch: 'noarch',
+        tempDir: 'tmp-dir'
+      };
+      var specDir = path.join(options.tempDir, 'SPECS');
+      var RE_CHANGELOG = /%changelog([\s\S]*)/m;
 
+      function formatChangelogDate(date) {
+        return dateFormat(date, 'ddd mmm dd yyyy');
+      }
+
+      before(function() {
+        fsx.mkdirpSync(specDir);
+      });
+
+      after(function() {
+        fsx.removeSync(options.tempDir);
+      });
+
+      it('should be optional', function(done) {
+        specFile = writeSpec([], options);
+
+        fsx.readFile(specFile, { encoding: 'utf-8' }, function(err, data) {
+          if (err) {
+            done(err);
+          }
+          assert(data.match(RE_CHANGELOG) === null, '%changelog is present in spec');
+          done();
+        });
+      });
+      it('should ignore empty array', function(done) {
+        var changelog = [];
+        specFile = writeSpec([], _.extend({}, options, {
+          changelog: changelog
+        }));
+
+        fsx.readFile(specFile, { encoding: 'utf-8' }, function(err, data) {
+          if (err) {
+            done(err);
+          }
+          assert(data.match(RE_CHANGELOG) === null, '%changelog is present in spec');
+          done();
+        });
+      });
+      it('should be contained in spec if contains entries', function(done) {
+        var changelog = [
+          {
+            date: new Date('1995-12-17T03:24:00'),
+            author: 'John Foo <john@foo.com>',
+            changes: [
+              'updated core library to 1.5.2',
+              'fixed API method `listUserContacts`'
+            ]
+          },
+          {
+            date: new Date('1995-12-19T03:24:00'),
+            author: 'John Foo <john@foo.com>',
+            changes: [
+              'established DB queries cache'
+            ]
+          }
+        ];
+        specFile = writeSpec([], _.extend({}, options, {
+          changelog: changelog
+        }));
+
+        fsx.readFile(specFile, { encoding: 'utf-8' }, function(err, data) {
+          if (err) {
+            done(err);
+          }
+          var matches = data.match(RE_CHANGELOG);
+          assert(matches !== null, '%changelog is missing in spec');
+          assert(matches.length > 1, '%changelog entries are corrupted');
+          changelog.forEach(function(entry) {
+            var expectedEntryHeader = ('* ' + formatChangelogDate(entry.date) + ' ' + entry.author);
+            assert(matches[1].indexOf(expectedEntryHeader) > -1,
+              'Changelog entry header has different format. Expecting: \'' + expectedEntryHeader + '\'');
+            entry.changes.forEach(function(change) {
+              assert(matches[1].indexOf('- ' + change) > -1, 'Change entry ' + change + ' is missing in spec');
+            });
+          });
+          done();
+        });
+      });
+    });
+  });
 });

@@ -277,6 +277,41 @@ An array specifying _only_ the architectures the RPM should build on (e.g. `["x8
 
 List of packages required for building (compiling) the program. You can specify a minimum version if necessary (e.g. `["ocaml >= 3.08"]`).
 
+### changelog
+`Array`
+
+An array of changelog entries in format:
+
+```
+{
+  date: Date,
+  author: String,
+  changes: Array<String>,
+}
+```
+
+*Example*
+
+```
+const changelog = [
+  {
+    date: new Date('1995-12-17T03:24:00'),
+    author: 'John Foo <john@foo.com>',
+    changes: [
+      'updated core library to 1.5.2',
+      'fixed API method `listUserContacts`'
+    ]
+  },
+  {
+    date: new Date('1995-12-19T03:24:00'),
+    author: 'John Foo <john@foo.com>',
+    changes: [
+      'established DB queries cache'
+    ]
+  }
+];
+```
+
 #### prepScript
 `Array`
 

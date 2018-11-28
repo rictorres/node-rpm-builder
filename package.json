@@ -42,7 +42,7 @@
     "chalk": "^0.5.1",
     "dateformat": "^2.0.0",
     "fs-extra": "^0.16.3",
-    "globby": "^1.1.0",
+    "globby": "^6.1.0",
     "lodash": "^4.17.4",
     "shortid": "^2.1.3"
   },

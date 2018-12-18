@@ -11,8 +11,7 @@
   },
   "main": "index.js",
   "engines": {
-    "node": ">=0.10.0",
-    "iojs": ">=1.0.0"
+    "node": ">=6.0.0"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",

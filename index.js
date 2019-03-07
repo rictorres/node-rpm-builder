@@ -168,6 +168,7 @@ function rpm(options, cb) {
     description: 'No description',
     version: '0.0.0',
     release: '1',
+    epoch: '',
     license: 'MIT',
     vendor: 'Vendor',
     group: 'Development/Tools',

@@ -52,6 +52,7 @@ describe('spec', function() {
       description: 'test description',
       version: '0.0.0',
       release: '1',
+      epoch: '22',
       license: 'MIT',
       vendor: 'Vendor',
       group: 'Development/Tools',
@@ -91,6 +92,7 @@ describe('spec', function() {
         'description',
         'version',
         'release',
+        'epoch',
         'license',
         'vendor',
         'group',
@@ -121,6 +123,18 @@ describe('spec', function() {
             assert(data.indexOf(directiveLine) > -1);
           }
         });
+        done();
+      });
+    });
+
+    it('should check an epoch parameter', function(done) {
+      fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
+        var epochMatchResultArr = /Epoch: (\d+)/gm.exec(data);
+        if(/Epoch: (\d+)/gm.test(data)) {
+          assert.strictEqual(epochMatchResultArr[1], options.epoch);
+        } else {
+          assert.strictEqual(epochMatchResultArr, null);
+        }
         done();
       });
     });

@@ -190,6 +190,11 @@ Sets the version tag in the RPM package. It's also used in the RPM file name.
 
 Sets the release tag in the RPM package. It's also used in the RPM file name.
 
+#### epoch
+`String` | `Number` (default: ``)
+
+The optional Epoch tag provides an ordering for the version numbers (replacing the deprecated Serial tag). Use this tag if RPM cannot figure out the ordering of which release comes after another.
+
 #### buildArch
 `String` (default: `'noarch'`)
 

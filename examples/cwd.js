@@ -1,3 +1,4 @@
+'use strict';
 var buildRpm = require('rpm-builder');
 
 var options = {
@@ -14,10 +15,10 @@ var options = {
     // /dist/img2.png
     // /dist/img3.png
     {src: './dev/file1.txt', dest: '/dist/'},
-    {src: './dev/file2.txt', dest: '/dist/'}
-    {src: './dev/file3.txt', dest: '/dist/'}
-    {cwd: './dev/', src: 'img1.png', dest: '/dist/'}
-    {cwd: './dev/', src: 'img2.png', dest: '/dist/'}
+    {src: './dev/file2.txt', dest: '/dist/'},
+    {src: './dev/file3.txt', dest: '/dist/'},
+    {cwd: './dev/', src: 'img1.png', dest: '/dist/'},
+    {cwd: './dev/', src: 'img2.png', dest: '/dist/'},
     {cwd: './dev/', src: 'img3.png', dest: '/dist/'}
   ]
 };

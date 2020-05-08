@@ -123,10 +123,12 @@ function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
     buildRoot,
     specFile
   ];
+  
   var cmdFile = cmd[0];
-  cmd.shift();
-
+  
   logger(chalk.cyan('Executing:'), cmd);
+  
+  cmd.shift();
 
   execOpts = execOpts || {};
 

@@ -132,7 +132,7 @@ function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
 
   execOpts = execOpts || {};
 
-  execFile(cmdFile, [cmd], execOpts, function rpmbuild(err, stdout) {
+  execFile(cmdFile, cmd, execOpts, function rpmbuild(err, stdout) {
 
     if (err) {
       return cb(err);

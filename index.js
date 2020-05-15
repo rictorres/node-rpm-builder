@@ -1,7 +1,7 @@
 'use strict';
 
 var chalk = require('chalk');
-var exec = require('child_process').exec;
+var execFile = require('child_process').execFile;
 var fsx = require('fs-extra');
 var globby = require('globby');
 var path = require('path');
@@ -122,13 +122,17 @@ function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
     '--buildroot',
     buildRoot,
     specFile
-  ].join(' ');
-
+  ];
+  
+  var cmdFile = cmd[0];
+  
   logger(chalk.cyan('Executing:'), cmd);
+  
+  cmd.shift();
 
   execOpts = execOpts || {};
 
-  exec(cmd, execOpts, function rpmbuild(err, stdout) {
+  execFile(cmdFile, cmd, execOpts, function rpmbuild(err, stdout) {
 
     if (err) {
       return cb(err);

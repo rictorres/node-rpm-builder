@@ -4,8 +4,8 @@
 
 var assert = require('assert');
 var fsx = require('fs-extra');
+var nanoid = require('nanoid');
 var path = require('path');
-var shortid = require('shortid');
 var _ = require('lodash');
 var dateFormat = require('dateformat');
 
@@ -57,7 +57,7 @@ describe('spec', function() {
       vendor: 'Vendor',
       group: 'Development/Tools',
       buildArch: 'noarch',
-      tempDir: 'tmp-' + shortid.generate(),
+      tempDir: 'tmp-' + nanoid.nanoid(16),
       files: [],
       keepTemp: false
     };

@@ -4,8 +4,8 @@ var chalk = require('chalk');
 var exec = require('child_process').exec;
 var fsx = require('fs-extra');
 var globby = require('globby');
+var nanoid = require('nanoid');
 var path = require('path');
-var shortid = require('shortid');
 var _ = require('lodash');
 
 var writeSpec = require('./lib/spec');
@@ -172,7 +172,7 @@ function rpm(options, cb) {
     vendor: 'Vendor',
     group: 'Development/Tools',
     buildArch: 'noarch',
-    tempDir: 'tmp-' + shortid.generate(),
+    tempDir: 'tmp-' + nanoid.nanoid(16),
     files: [],
     excludeFiles: [],
     rpmDest: process.cwd(),

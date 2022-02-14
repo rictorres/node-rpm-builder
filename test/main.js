@@ -6,8 +6,8 @@ var assert = require('assert');
 var exec = require('child_process').exec;
 var fsx = require('fs-extra');
 var globby = require('globby');
+var nanoid = require('nanoid');
 var path = require('path');
-var shortid = require('shortid');
 var _ = require('lodash');
 
 var buildRpm = require('../');
@@ -54,7 +54,7 @@ describe('rpm builder', function() {
 
     it('should keep the temp folder when `keepTemp: true`', function(done) {
       var options = {
-        tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
+        tempDir: 'rpm-builder-test-tmp-' + nanoid.nanoid(16),
         keepTemp: true
       };
 
@@ -78,7 +78,7 @@ describe('rpm builder', function() {
 
     it('should remove the temp folder when `keepTemp: false`', function(done) {
       var options = {
-        tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
+        tempDir: 'rpm-builder-test-tmp-' + nanoid.nanoid(16),
         keepTemp: false
       };
 
@@ -100,7 +100,7 @@ describe('rpm builder', function() {
     it('should create a proper rpm folder structure inside the temp dir', function(done) {
       var rpmStructure = ['BUILD', 'BUILDROOT', 'RPMS', 'SOURCES', 'SPECS', 'SRPMS'];
       var options = {
-        tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
+        tempDir: 'rpm-builder-test-tmp-' + nanoid.nanoid(16),
         keepTemp: true
       };
 
@@ -131,7 +131,7 @@ describe('rpm builder', function() {
 
     it('rpm file should be copied to the `rpmDest`', function(done) {
       var options = {
-        tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
+        tempDir: 'rpm-builder-test-tmp-' + nanoid.nanoid(16),
         rpmDest: path.join(process.cwd(), 'test'),
         keepTemp: false
       };
@@ -156,7 +156,7 @@ describe('rpm builder', function() {
         version: '23.02.87',
         release: '28',
         buildArch: 'noarch',
-        tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
+        tempDir: 'rpm-builder-test-tmp-' + nanoid.nanoid(16),
         keepTemp: false
       };
 
@@ -191,7 +191,7 @@ describe('rpm builder', function() {
         excludeFiles: [
           './test/main.js'
         ],
-        tempDir: 'rpm-builder-test-tmp-' + shortid.generate(),
+        tempDir: 'rpm-builder-test-tmp-' + nanoid.nanoid(16),
         keepTemp: true
       };
 

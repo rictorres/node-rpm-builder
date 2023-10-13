@@ -1,16 +1,14 @@
-'use strict';
+import chalk from "chalk";
+import {exec} from "child_process";
+import fsx from "fs-extra";
+import globby from "globby";
+import path from "path";
+import shortid from "shortid";
+import _ from "lodash";
+import writeSpec from "./lib/spec.js";
+import logging from "./lib/logging.js"
 
-var chalk = require('chalk');
-var exec = require('child_process').exec;
-var fsx = require('fs-extra');
-var globby = require('globby');
-var path = require('path');
-var shortid = require('shortid');
-var _ = require('lodash');
-
-var writeSpec = require('./lib/spec');
-
-var logger;
+let logger;
 
 /**
  * Creates the folder structure needed to create
@@ -19,7 +17,7 @@ var logger;
  * @param  {String} tmpDir the path where the folder structure will reside
  */
 function setupTempDir(tmpDir) {
-  var rpmStructure = ['BUILD', 'BUILDROOT', 'RPMS', 'SOURCES', 'SPECS', 'SRPMS'];
+  const rpmStructure = ['BUILD', 'BUILDROOT', 'RPMS', 'SOURCES', 'SPECS', 'SRPMS'];
 
   // If the tmpDir exists (probably from previous build), delete it first
   if (fsx.existsSync(tmpDir)) {
@@ -29,7 +27,7 @@ function setupTempDir(tmpDir) {
 
   // Create RPM folder structure
   logger(chalk.cyan('Creating RPM directory structure at:'), tmpDir);
-  _.forEach(rpmStructure, function(dirName) {
+  _.forEach(rpmStructure, function (dirName) {
     fsx.mkdirpSync(path.join(tmpDir, dirName));
   });
 }
@@ -42,7 +40,7 @@ function setupTempDir(tmpDir) {
  * @return {Array}              expanded list of files to ignore
  */
 function retrieveFilesToExclude(excludeFiles) {
-  return globby.sync(excludeFiles).map(function(file) {
+  return globby.sync(excludeFiles).map(function (file) {
     return path.normalize(file);
   });
 }
@@ -65,21 +63,21 @@ function checkDirective(directive) {
  * @return {Array}                list of files to include in the RPM
  */
 function prepareFiles(files, excludeFiles, buildRoot) {
-  var _files = [];
-  var filesToExclude = retrieveFilesToExclude(excludeFiles);
+  const _files = [];
+  const filesToExclude = retrieveFilesToExclude(excludeFiles);
 
-  _.forEach(files, function(file) {
-    if (!file.hasOwnProperty('src') || !file.hasOwnProperty('dest')) {
+  _.forEach(files, function (file) {
+    if (!Object.prototype.hasOwnProperty.call(file, 'src') || !Object.prototype.hasOwnProperty.call(file, 'dest')) {
       throw new Error('All files/folders must have source (src) and destination (dest) set');
     }
 
     file.cwd = (file.cwd || '.') + '/';
 
-    var actualSrc = globby.sync(path.join(file.cwd, file.src));
+    const actualSrc = globby.sync(path.join(file.cwd, file.src));
 
     fsx.ensureDir(path.join(buildRoot, file.dest));
 
-    _.forEach(actualSrc, function(srcFile) {
+    _.forEach(actualSrc, function (srcFile) {
       // Check whether to ignore this file
       if (filesToExclude.indexOf(srcFile) > -1) {
         return;
@@ -89,13 +87,12 @@ function prepareFiles(files, excludeFiles, buildRoot) {
       // taking into account the cwd
       // so the destination should be
       // relative to the cwd
-      var copyTarget = path.normalize(srcFile).replace(path.normalize(file.cwd), '');
-      var dest = path.join(file.dest, copyTarget);
+      const copyTarget = path.normalize(srcFile).replace(path.normalize(file.cwd), '');
+      const dest = path.join(file.dest, copyTarget);
 
       if (checkDirective(file.directive)) {
         _files.push({path: dest, directive: file.directive});
-      }
-      else {
+      } else {
         throw new Error('Invalid file directive informed: ' + file.directive);
       }
 
@@ -112,11 +109,12 @@ function prepareFiles(files, excludeFiles, buildRoot) {
  * @param  {String}   buildRoot  where all included files reside
  * @param  {String}   specFile   path to the file from which the RPM package will be created
  * @param  {String}   rpmDest    where the .rpm file should be copied to
+ * @param  {Object}   execOpts   options to pass to exec call
  * @param  {Function} cb         callback function to be executed when the task is done
  */
 function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
   // Build the RPM package.
-  var cmd = [
+  const cmd = [
     'rpmbuild',
     '-bb',
     '--buildroot',
@@ -135,10 +133,10 @@ function buildRpm(buildRoot, specFile, rpmDest, execOpts, cb) {
     }
 
     if (stdout) {
-      var rpm = stdout.match(/(\/.+\..+\.rpm)/);
+      const rpm = stdout.match(/(\/.+\..+\.rpm)/);
 
       if (rpm && rpm.length > 0) {
-        var rpmDestination = rpm[0];
+        let rpmDestination = rpm[0];
 
         if (rpmDest) {
           rpmDestination = path.join(rpmDest, path.basename(rpmDestination));
@@ -161,7 +159,7 @@ function rpm(options, cb) {
     throw new TypeError('callback is missing');
   }
 
-  var defaults = {
+  const defaults = {
     name: 'no-name',
     summary: 'No summary',
     description: 'No description',
@@ -183,27 +181,26 @@ function rpm(options, cb) {
 
   options = _.defaults(options, defaults);
 
-  logger = options.verbose ? require('./lib/logger') : function() {
-    return;
+  logger = options.verbose ? logging : function () {
   };
 
-  var tmpDir = path.resolve(options.tempDir);
-  var buildRoot = path.join(tmpDir, '/BUILDROOT/');
-  var files = [];
+  const tmpDir = path.resolve(options.tempDir);
+  const buildRoot = path.join(tmpDir, '/BUILDROOT/');
+  let files = [];
 
   setupTempDir(tmpDir);
 
   try {
     files = prepareFiles(options.files, options.excludeFiles, buildRoot);
-  } catch(ex) {
+  } catch (ex) {
     return cb(ex);
   }
 
   // Write spec file
-  var specFile = writeSpec(files, options);
+  const specFile = writeSpec(files, options);
   logger(chalk.cyan('SPEC file created:'), specFile);
 
-  buildRpm(buildRoot, specFile, options.rpmDest, options.execOpts, function(err, rpm) {
+  buildRpm(buildRoot, specFile, options.rpmDest, options.execOpts, function (err, rpm) {
     if (err) {
       return cb(err);
     }
@@ -218,4 +215,4 @@ function rpm(options, cb) {
   });
 }
 
-module.exports = rpm;
+export default rpm;

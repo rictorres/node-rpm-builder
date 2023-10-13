@@ -1,52 +1,53 @@
-'use strict';
-
 /* global describe, it, before, after */
 
-var assert = require('assert');
-var fsx = require('fs-extra');
-var path = require('path');
-var shortid = require('shortid');
-var _ = require('lodash');
-var dateFormat = require('dateformat');
+import assert from "assert";
+import fsx from "fs-extra";
+import path from "path";
+import shortid from "shortid";
+import _ from "lodash";
+import dateFormat from "dateformat";
+import writeSpec from "../lib/spec.js";
+import { fileURLToPath } from 'url';
 
-var writeSpec = require('../lib/spec.js');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-describe('spec', function() {
+describe('spec', function () {
 
-  describe('spec init', function() {
+  describe('spec init', function () {
 
-    it('should throw an error if files array is missing', function() {
+    it('should throw an error if files array is missing', function () {
       assert.throws(writeSpec, TypeError);
     });
 
-    it('should throw an error if files is not an array', function() {
-      assert.throws(function() {
+    it('should throw an error if files is not an array', function () {
+      assert.throws(function () {
         writeSpec('');
       }, TypeError);
     });
 
-    it('should throw an error if options object is missing', function() {
-      assert.throws(function() {
+    it('should throw an error if options object is missing', function () {
+      assert.throws(function () {
         writeSpec([]);
       }, TypeError);
     });
 
-    it('should throw an error if options is not an object', function() {
-      assert.throws(function() {
+    it('should throw an error if options is not an object', function () {
+      assert.throws(function () {
         writeSpec([], '');
       }, TypeError);
     });
 
   });
 
-  describe('spec output', function() {
-    var specFile;
-    var files = [
+  describe('spec output', function () {
+    let specFile;
+    const files = [
       {path: path.join(__dirname, 'index.js')},
       {path: path.join(__dirname, 'package.json')},
       {path: path.join(__dirname, 'README.md'), directive: 'config'}
     ];
-    var options = {
+    const options = {
       name: 'test',
       summary: 'test summary',
       description: 'test description',
@@ -61,32 +62,32 @@ describe('spec', function() {
       files: [],
       keepTemp: false
     };
-    var specDir = path.join(options.tempDir, 'SPECS');
+    const specDir = path.join(options.tempDir, 'SPECS');
 
-    before(function() {
+    before(function () {
       fsx.mkdirpSync(specDir);
       specFile = writeSpec(files, options);
     });
 
-    after(function() {
+    after(function () {
       fsx.removeSync(options.tempDir);
     });
 
-    it('should create a spec file', function(done) {
-      fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
+    it('should create a spec file', function (done) {
+      fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
         assert.strictEqual(err, null);
         assert(data);
         done();
       });
     });
 
-    it('should have correct file name', function() {
-      var specFileName = options.name + '-' + options.version + '-' + options.release + '.' + options.buildArch + '.spec';
+    it('should have correct file name', function () {
+      const specFileName = options.name + '-' + options.version + '-' + options.release + '.' + options.buildArch + '.spec';
       assert.strictEqual(path.basename(specFile), specFileName);
     });
 
-    it('should have options properly specified', function(done) {
-      var opts = [
+    it('should have options properly specified', function (done) {
+      const opts = [
         'name',
         'summary',
         'description',
@@ -99,27 +100,27 @@ describe('spec', function() {
         'buildArch'
       ];
 
-      fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
-        opts.forEach(function(key) {
+      fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
+        opts.forEach(function (key) {
           assert(data.indexOf(options[key]) > -1);
         });
         done();
       });
     });
 
-    it('should have %files block defined', function(done) {
-      fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
+    it('should have %files block defined', function (done) {
+      fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
         assert(data.indexOf('%files') > -1);
         done();
       });
     });
 
-    it('should have all files defined', function(done) {
-      fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
-        files.forEach(function(file) {
+    it('should have all files defined', function (done) {
+      fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
+        files.forEach(function (file) {
           assert(data.indexOf(file.path) > -1);
-          if(file.hasOwnProperty('directive')) {
-            var directiveLine = '%config "' + file.path + '"';
+          if (Object.prototype.hasOwnProperty.call(file, 'directive')) {
+            const directiveLine = '%config "' + file.path + '"';
             assert(data.indexOf(directiveLine) > -1);
           }
         });
@@ -127,10 +128,10 @@ describe('spec', function() {
       });
     });
 
-    it('should check an epoch parameter', function(done) {
-      fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
-        var epochMatchResultArr = /Epoch: (\d+)/gm.exec(data);
-        if(/Epoch: (\d+)/gm.test(data)) {
+    it('should check an epoch parameter', function (done) {
+      fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
+        const epochMatchResultArr = /Epoch: (\d+)/gm.exec(data);
+        if (/Epoch: (\d+)/gm.test(data)) {
           assert.strictEqual(epochMatchResultArr[1], options.epoch);
         } else {
           assert.strictEqual(epochMatchResultArr, null);
@@ -139,29 +140,29 @@ describe('spec', function() {
       });
     });
 
-    describe('packager option', function() {
-      var options = {
+    describe('packager option', function () {
+      const options = {
         name: 'test',
         version: '0.0.0',
         release: '1',
         buildArch: 'noarch',
         tempDir: 'tmp-dir'
       };
-      var specDir = path.join(options.tempDir, 'SPECS');
-      var RE_PACKAGER = /Packager:(.*)/;
+      const specDir = path.join(options.tempDir, 'SPECS');
+      const RE_PACKAGER = /Packager:(.*)/;
 
-      before(function() {
+      before(function () {
         fsx.mkdirpSync(specDir);
       });
 
-      after(function() {
+      after(function () {
         fsx.removeSync(options.tempDir);
       });
 
-      it('should be optional', function(done) {
+      it('should be optional', function (done) {
         specFile = writeSpec([], options);
 
-        fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
+        fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
           if (err) {
             done(err);
           }
@@ -170,17 +171,17 @@ describe('spec', function() {
         });
       });
 
-      it('should be contained in spec if specified', function(done) {
-        var packager = 'John Foo <john@foo.com>';
+      it('should be contained in spec if specified', function (done) {
+        const packager = 'John Foo <john@foo.com>';
         specFile = writeSpec([], _.extend({}, options, {
           packager: packager
         }));
 
-        fsx.readFile(specFile, {encoding: 'utf-8'}, function(err, data) {
+        fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
           if (err) {
             done(err);
           }
-          var matches = data.match(RE_PACKAGER);
+          const matches = data.match(RE_PACKAGER);
           assert(matches !== null, 'Packager is missing in spec');
           assert(matches.length > 1, 'Packager line is corrupted in spec');
           assert(matches[1].indexOf(packager) > -1, 'Packager value is missing in spec');
@@ -189,33 +190,33 @@ describe('spec', function() {
       });
     });
 
-    describe('changelog option', function() {
-      var options = {
+    describe('changelog option', function () {
+      const options = {
         name: 'test',
         version: '0.0.0',
         release: '1',
         buildArch: 'noarch',
         tempDir: 'tmp-dir'
       };
-      var specDir = path.join(options.tempDir, 'SPECS');
-      var RE_CHANGELOG = /%changelog([\s\S]*)/m;
+      const specDir = path.join(options.tempDir, 'SPECS');
+      const RE_CHANGELOG = /%changelog([\s\S]*)/m;
 
       function formatChangelogDate(date) {
         return dateFormat(date, 'ddd mmm dd yyyy');
       }
 
-      before(function() {
+      before(function () {
         fsx.mkdirpSync(specDir);
       });
 
-      after(function() {
+      after(function () {
         fsx.removeSync(options.tempDir);
       });
 
-      it('should be optional', function(done) {
+      it('should be optional', function (done) {
         specFile = writeSpec([], options);
 
-        fsx.readFile(specFile, { encoding: 'utf-8' }, function(err, data) {
+        fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
           if (err) {
             done(err);
           }
@@ -223,13 +224,13 @@ describe('spec', function() {
           done();
         });
       });
-      it('should ignore empty array', function(done) {
-        var changelog = [];
+      it('should ignore empty array', function (done) {
+        const changelog = [];
         specFile = writeSpec([], _.extend({}, options, {
           changelog: changelog
         }));
 
-        fsx.readFile(specFile, { encoding: 'utf-8' }, function(err, data) {
+        fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
           if (err) {
             done(err);
           }
@@ -237,8 +238,8 @@ describe('spec', function() {
           done();
         });
       });
-      it('should be contained in spec if contains entries', function(done) {
-        var changelog = [
+      it('should be contained in spec if contains entries', function (done) {
+        const changelog = [
           {
             date: new Date('1995-12-17T03:24:00'),
             author: 'John Foo <john@foo.com>',
@@ -259,18 +260,18 @@ describe('spec', function() {
           changelog: changelog
         }));
 
-        fsx.readFile(specFile, { encoding: 'utf-8' }, function(err, data) {
+        fsx.readFile(specFile, {encoding: 'utf-8'}, function (err, data) {
           if (err) {
             done(err);
           }
-          var matches = data.match(RE_CHANGELOG);
+          const matches = data.match(RE_CHANGELOG);
           assert(matches !== null, '%changelog is missing in spec');
           assert(matches.length > 1, '%changelog entries are corrupted');
-          changelog.forEach(function(entry) {
-            var expectedEntryHeader = ('* ' + formatChangelogDate(entry.date) + ' ' + entry.author);
+          changelog.forEach(function (entry) {
+            const expectedEntryHeader = ('* ' + formatChangelogDate(entry.date) + ' ' + entry.author);
             assert(matches[1].indexOf(expectedEntryHeader) > -1,
               'Changelog entry header has different format. Expecting: \'' + expectedEntryHeader + '\'');
-            entry.changes.forEach(function(change) {
+            entry.changes.forEach(function (change) {
               assert(matches[1].indexOf('- ' + change) > -1, 'Change entry ' + change + ' is missing in spec');
             });
           });

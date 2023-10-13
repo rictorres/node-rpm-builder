@@ -1,6 +1,6 @@
 {
   "name": "rpm-builder",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "description": "Build RPM packages using Node.js",
   "license": "MIT",
   "homepage": "https://github.com/rictorres/node-rpm-builder",
@@ -10,8 +10,9 @@
     "url": "http://rictorres.com"
   },
   "main": "index.js",
+  "type": "module",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha",
@@ -47,9 +48,8 @@
   },
   "devDependencies": {
     "istanbul": "^0.4.5",
-    "jshint": "^2.9.7",
-    "jshint-stylish": "^1.0.0",
     "mocha": "^10.2.0",
+    "eslint": "^8.51.0",
     "pre-commit": "0.0.11"
   }
 }

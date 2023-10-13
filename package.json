@@ -17,7 +17,7 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha",
     "coverage": "./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*.js",
-    "lint": "./node_modules/jshint/bin/jshint --reporter ./node_modules/jshint-stylish/stylish.js examples/*.js index.js lib/*.js test/*.js; true"
+    "lint": "npx eslint ."
   },
   "pre-commit": [
     "lint",

@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha",
-    "coverage": "npx nyc node_modules/mocha/bin/_mocha -- -R spec test/*.js",
+    "coverage": "npx nyc node_modules/mocha/bin/_mocha",
     "lint": "npx eslint ."
   },
   "pre-commit": [

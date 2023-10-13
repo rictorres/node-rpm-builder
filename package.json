@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha",
-    "coverage": "./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*.js",
+    "coverage": "npx nyc node_modules/mocha/bin/_mocha -- -R spec test/*.js",
     "lint": "npx eslint ."
   },
   "pre-commit": [
@@ -47,8 +47,8 @@
     "shortid": "^2.2.16"
   },
   "devDependencies": {
-    "istanbul": "^0.4.5",
+    "eslint": "^8.51.0",
     "mocha": "^10.2.0",
-    "eslint": "^8.51.0"
+    "nyc": "^15.1.0"
   }
 }

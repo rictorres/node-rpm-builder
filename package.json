@@ -1,6 +1,6 @@
 {
   "name": "rpm-builder",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Build RPM packages using Node.js",
   "license": "MIT",
   "homepage": "https://github.com/rictorres/node-rpm-builder",
@@ -10,13 +10,14 @@
     "url": "http://rictorres.com"
   },
   "main": "index.js",
+  "type": "module",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
-    "coverage": "./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*.js",
-    "lint": "./node_modules/jshint/bin/jshint --reporter ./node_modules/jshint-stylish/stylish.js examples/*.js index.js lib/*.js test/*.js; true"
+    "test": "./node_modules/mocha/bin/_mocha",
+    "coverage": "npx nyc node_modules/mocha/bin/_mocha",
+    "lint": "npx eslint ."
   },
   "pre-commit": [
     "lint",
@@ -38,18 +39,16 @@
   ],
   "readmeFilename": "README.md",
   "dependencies": {
-    "chalk": "^0.5.1",
-    "dateformat": "^2.0.0",
+    "chalk": "^4.1.2",
+    "dateformat": "^2.2.0",
     "fs-extra": "^1.0.0",
     "globby": "^6.1.0",
-    "lodash": "^4.17.4",
-    "shortid": "^2.1.3"
+    "lodash": "^4.17.21",
+    "nanoid": "^5.0.2"
   },
   "devDependencies": {
-    "istanbul": "^0.4.5",
-    "jshint": "^2.9.7",
-    "jshint-stylish": "^1.0.0",
-    "mocha": "^2.1.0",
-    "pre-commit": "0.0.11"
+    "eslint": "^8.51.0",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0"
   }
 }

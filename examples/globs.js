@@ -1,7 +1,6 @@
-'use strict';
-var buildRpm = require('rpm-builder');
+import buildRpm from "../index.js";
 
-var options = {
+const options = {
   name: 'my-project',
   version: '0.0.0',
   release: '1',

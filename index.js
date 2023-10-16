@@ -170,7 +170,7 @@ function rpm(options, cb) {
     vendor: 'Vendor',
     group: 'Development/Tools',
     buildArch: 'noarch',
-    tempDir: 'tmp-' + nanoid.nanoid(16),
+    tempDir: 'tmp-' + nanoid(16),
     files: [],
     excludeFiles: [],
     rpmDest: process.cwd(),

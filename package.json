@@ -44,7 +44,7 @@
     "fs-extra": "^1.0.0",
     "globby": "^6.1.0",
     "lodash": "^4.17.21",
-    "shortid": "^2.2.16"
+    "nanoid": "^5.0.2"
   },
   "devDependencies": {
     "eslint": "^8.51.0",

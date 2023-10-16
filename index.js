@@ -3,10 +3,10 @@ import {exec} from "child_process";
 import fsx from "fs-extra";
 import globby from "globby";
 import path from "path";
-import shortid from "shortid";
 import _ from "lodash";
 import writeSpec from "./lib/spec.js";
 import logging from "./lib/logging.js"
+import {nanoid} from "nanoid";
 
 let logger;
 
@@ -170,7 +170,7 @@ function rpm(options, cb) {
     vendor: 'Vendor',
     group: 'Development/Tools',
     buildArch: 'noarch',
-    tempDir: 'tmp-' + shortid.generate(),
+    tempDir: 'tmp-' + nanoid.nanoid(16),
     files: [],
     excludeFiles: [],
     rpmDest: process.cwd(),

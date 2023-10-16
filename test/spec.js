@@ -3,11 +3,11 @@
 import assert from "assert";
 import fsx from "fs-extra";
 import path from "path";
-import shortid from "shortid";
 import _ from "lodash";
 import dateFormat from "dateformat";
 import writeSpec from "../lib/spec.js";
 import { fileURLToPath } from 'url';
+import {nanoid} from "nanoid";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,7 +58,7 @@ describe('spec', function () {
       vendor: 'Vendor',
       group: 'Development/Tools',
       buildArch: 'noarch',
-      tempDir: 'tmp-' + shortid.generate(),
+      tempDir: 'tmp-' + nanoid.nanoid(16),
       files: [],
       keepTemp: false
     };
